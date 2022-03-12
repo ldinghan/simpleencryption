@@ -11,9 +11,10 @@ for i in range(97,123):
 
 
 def encrypt(s):
-	shift = random.randint(1,9)
+	pre = random.randint(3,9)
+	shift = random.randint(1,pre-1)
 	output = ""
-	for i in range(10):
+	for i in range(pre):
 		output += random.choice(break2)
 	shift2 = output[shift]
 	for i in range(len(s)):
@@ -22,7 +23,7 @@ def encrypt(s):
 		output += str(temp) + random.choice(break1) + random.choice(break2)
 	if shift < 4:
 		output += "0"
-	output += str(shift**2) + random.choice(break2) + random.choice(break2) + "\n"
+	output += str(shift**2) + random.choice(break2) + random.choice(break2) + str(pre) + "\n"
 	with open("passwords.txt", "a") as file_object:
 		file_object.write(output)
 
@@ -31,7 +32,10 @@ def encrypt(s):
 
 
 def decrypt(h):
-	shift = int(int(h[-4]+h[-3])**0.5)
+	if not h:
+		return
+	pre = int(h[-1])
+	shift = int(int(h[-5]+h[-4])**0.5)
 	shift2 = h[shift]
 	output = ""
 	length = 0
@@ -40,7 +44,7 @@ def decrypt(h):
 	for i in h:
 		if i in break1:
 			length += 1
-	pointer = 10
+	pointer = pre
 	while pointer < len(h):
 		if h[pointer] in break1:
 			chars.append(int(temp))
